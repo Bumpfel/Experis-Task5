@@ -1,6 +1,5 @@
 package se.experis.task5.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import se.experis.task5.data_access.CustomerRepositoryMock;
@@ -25,7 +23,7 @@ public class CustomerController {
   CustomerRepositoryMock customerRepository = new CustomerRepositoryMock();
 
   @GetMapping("/customers")
-  public ArrayList<Customer> getAllCustomers() {
+  public List<Customer> getAllCustomers() {
     return customerRepository.getAllCustomers();
   }
   
@@ -45,7 +43,7 @@ public class CustomerController {
   }
 
   @GetMapping("/customers/highestSpending")
-  public ArrayList<CustomerSpending> getHighestSpendingCustomersOrdered() {
+  public List<CustomerSpending> getHighestSpendingCustomersOrdered() {
     return customerRepository.getHighestSpendingCustomersOrdered();
   }
 

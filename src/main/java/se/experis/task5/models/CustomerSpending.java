@@ -1,24 +1,16 @@
 package se.experis.task5.models;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class CustomerSpending extends Customer {
 
-  private Integer spendings;
-  
+  private int spendings;
+
   public CustomerSpending(int id, String firstName, String lastName, String country, String postalCode, String phone, int spendings) {
-    this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.country = country;
-    this.postalCode = postalCode;
-    this.phone = phone;
-    this.spendings = spendings;
-  }
-
-  public Integer getSpendings() {
-    return spendings;
-  }
-
-  public void setSpendings(Integer spendings) {
+    super(id, firstName, lastName, country, postalCode, phone);
     this.spendings = spendings;
   }
 }
