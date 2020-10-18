@@ -32,7 +32,9 @@ public class MediaRepositoryMock {
     );
   }
 
-  public SearchResult findTrack(String searchTerm) {
-    return new SearchResult("", "Kaiser Chiefs", "Yours Truly, Angry Mob", "Rock");
+  public List<SearchResult> findTrack(String searchTerm) {
+    return List.of(
+      new SearchResult("Ruby", "Kaiser Chiefs", "Yours Truly, Angry Mob", "Rock"),
+      new SearchResult("Ruby Tuesday", "The Rolling Stones", "Between The Buttons", "Classic Rock"));
   }
 }
