@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../css/style.css">
+  <title>Index</title>
+</head>
+<body>
+  <!-- Menu -->
+  <div id="menu">
+    <a href="/">home</a>
+    
+    <form action="/search">
+      <input type="search" name="term" placeholder="Search..." autocomplete="off">
+    </form>
+  </div>
+    
+  <!-- Content -->
+  <main>
+    <h1>Search results</h1>
+      Your search for "<span th:text="${param.term}"></span>" resulted in <span th:text="${searchResult.size()}"></span> matches
+
+      <div class="card" th:each="result : ${searchResult}">
+        <div>
+          <span>Track: </span>
+          <span th:text="${result.trackName}"></span>
+        </div>
+        
+        <div>
+          <span>Artist: </span>
+          <span th:text="${result.artistName}"></span>
+        </div>
+        
+        <div>
+          <span>Album: </span>
+          <span th:text="${result.albumName}"></span>
+        </div>
+
+        <div>
+          <span>Album: </span>
+          <span th:text="${result.genre}"></span>
+        </div>
+      </div>
+    </main>
+  </body>
+  </html>
