@@ -21,7 +21,6 @@ public class Customer implements Comparable<Customer> {
   protected String email;
   protected Integer supportRepId;
 
-  // Used for get customers
   public Customer(int id, String firstName, String lastName, String country, String postalCode, String phone) {
     this.id = id;
     this.firstName = firstName;

@@ -1,5 +1,8 @@
 package se.experis.task5.models;
 
+import lombok.Data;
+
+@Data
 public class SearchResult {
   private String trackName;
   private String artistName;
@@ -13,19 +16,4 @@ public class SearchResult {
     this.genre = genre;
   }
 
-  public String getTrackName() {
-    return trackName;
-  }
-  
-  public String getArtistName() {
-    return artistName;
-  }
-
-  public String getAlbumName() {
-    return albumName;
-  }
-
-  public String getGenre() {
-    return genre;
-  }
 }
