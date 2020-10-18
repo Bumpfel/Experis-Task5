@@ -1,38 +1,45 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
-  <title>Index</title>
+  <title>Experis Task 5: Index</title>
 </head>
+
 <body>
+  <!-- Menu -->
   <div id="menu">
     <a href="/">home</a>
-    
+    <a href="/api-endpoints">api</a>
+
     <form action="/search">
       <input type="search" name="term" placeholder="Search..." autocomplete="off">
+      <button type="submit">Search</button>
     </form>
   </div>
-    
+
+  <!-- Content -->
   <main>
     <h1>Home</h1>
-    
-      <h2>Random artists </h2>
-      <div class="card" th:each="artist : ${randomArtists}">
-        <div th:text="${artist}"></div>
-      </div>
-      
-      <h2>Random albums</h2>
-      <div class="card" th:each="album : ${randomAlbums}">
-        <div th:text="${album.title}"></div>
-        <div class="category" th:text="${album.artist}"></div>
-      </div>
-      
-      <h2>Random tracks</h2>
-      <div class="card" th:each="track : ${randomTracks}">
-        <div th:text="${track.name}"></div>
-        <div th:text="${track.albumTitle}"></div>
-      </div>
-    </main>
-  </body>
-  </html>
+
+    <h2>Random artists </h2>
+    <div class="card" th:each="artist : ${randomArtists}">
+      <div th:text="${artist}"></div>
+    </div>
+
+    <h2>Random albums</h2>
+    <div class="card" th:each="album : ${randomAlbums}">
+      <div th:text="${album.title}"></div>
+      <div class="category" th:text="${album.artist}"></div>
+    </div>
+
+    <h2>Random tracks</h2>
+    <div class="card" th:each="track : ${randomTracks}">
+      <div th:text="${track.name}"></div>
+      <div th:text="${track.albumTitle}"></div>
+    </div>
+  </main>
+</body>
+
+</html>

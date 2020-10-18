@@ -26,4 +26,10 @@ public class ViewController {
     model.addAttribute("searchResult", result);
     return "search";
   }
+
+  @GetMapping("/api-endpoints")
+  public String api(Model model) {
+    model.addAttribute("endpoints", CustomerController.getAllEndpoints());
+    return "api";
+  }
 }

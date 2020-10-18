@@ -3,46 +3,61 @@ body {
   background-color: #9a9;
 }
 
-main {
-  margin: 20px;
-}
-
+/* Menu */
 #menu {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-transform: uppercase;
-  margin: 0;
   background-color: #222;
+  white-space: nowrap;
 }
-
 #menu a {
   display: inline-block;
-  margin: 0;
   padding: 15px 50px;
-  
+  margin-right: -5px;
+
   color: #ccc;
   text-decoration: none;
   border-right: 1px solid #ccc;
 }
-
 #menu a:hover {
   background-color: #555;
 }
 
-form {
+#menu form {
   display: inline-block;
   position: relative;
+  padding-left: 10px;
+}
+#menu input {
+  padding: 5px;
+  outline: none;
+}
+#menu button {
+  padding: 5px;
 }
 
-input {
-  outline: none;
+
+
+/* Main */
+main {
+  margin: 20px;
+}
+
+main a {
+  color: #222;
 }
 
 .card {
-  display: flex;
+  display: inline-flex;
   margin: 10px;
 }
 
-.card span:first-child {
+.block {
+  display: block;
+  margin-bottom: 20px;
+}
+
+span.header {
   font-weight: bold;
 }
 

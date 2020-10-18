@@ -1,46 +1,58 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
-  <title>Index</title>
+  <title>Experis Task 5: Search Results</title>
 </head>
+
 <body>
   <!-- Menu -->
   <div id="menu">
     <a href="/">home</a>
-    
+    <a href="/api-endpoints">api</a>
+
     <form action="/search">
       <input type="search" name="term" placeholder="Search..." autocomplete="off">
+      <button type="submit">Search</button>
     </form>
   </div>
-    
+
   <!-- Content -->
   <main>
     <h1>Search results</h1>
-      Your search for "<span th:text="${param.term}"></span>" resulted in <span th:text="${searchResult.size()}"></span> matches
+    Your search for "<span th:text="${param.term}"></span>" resulted in <span th:text="${searchResult.size()}"></span>
+    matches
 
-      <div class="card" th:each="result : ${searchResult}">
+    <br>
+
+    <div th:each="result : ${searchResult}">
+
+      <div class="card">
         <div>
-          <span>Track: </span>
+          <span class="header">Track: </span>
           <span th:text="${result.trackName}"></span>
         </div>
-        
+
         <div>
-          <span>Artist: </span>
+          <span class="header">Artist: </span>
           <span th:text="${result.artistName}"></span>
         </div>
-        
+
         <div>
-          <span>Album: </span>
+          <span class="header">Album: </span>
           <span th:text="${result.albumName}"></span>
         </div>
 
         <div>
-          <span>Album: </span>
+          <span class="header">Genre: </span>
           <span th:text="${result.genre}"></span>
         </div>
       </div>
-    </main>
-  </body>
-  </html>
+
+    </div>
+  </main>
+</body>
+
+</html>

@@ -22,6 +22,17 @@ public class CustomerController {
   
   CustomerRepositoryMock customerRepository = new CustomerRepositoryMock();
 
+  public static List<List<String>> getAllEndpoints() {
+    return List.of(
+      List.of("GET", "/api/customers", "Get all customers"), 
+      List.of("POST", "/api/customers", "Add a customer"),
+      List.of("PUT", "/api/customers", "Update a customer"),
+      List.of("GET", "/api/customers/total/country", "Get total amount of customers, grouped and ordered by country"),
+      List.of("GET", "/api/customers/highestSpending", "Get customers and money spent in descending order"),
+      List.of("GET", "/api/customers/:customerId/mostPopular/genre", "Get the most popular genre of a particular customer")
+    );
+  }
+
   @GetMapping("/customers")
   public List<Customer> getAllCustomers() {
     return customerRepository.getAllCustomers();
