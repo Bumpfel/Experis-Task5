@@ -18,12 +18,18 @@ public class ErrorViewController implements ErrorController {
     String message;
     request.getAttribute("javax.servlet.error.exception");
     if(statusCode == 404) {
+      // Page not found
       message = "Four, oh four; page not found";
-    } else if(statusCode == 500) {
+    } else if(statusCode / 100 == 5) {
+      // Server error
       message = "There was a problem, but it's not your fault. Promise!";
+    } else if(statusCode / 100 == 4) {
+      // Client error (not 404)
+      message = "You obviously made some kind of mistake...";
     } else {
-      message = "Error: " + statusCode + ". Try turning it off and on again. Make sure your device is PLUGGED IN!";
+      message = "Unknown error. Try turning it off and on again. Make sure your device is PLUGGED IN!";
     }
+
     model.addAttribute("statusCode", statusCode);
     model.addAttribute("message", message);
     return "error";

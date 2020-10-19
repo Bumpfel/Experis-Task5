@@ -16,7 +16,7 @@
   <div th:replace="fragments/menu :: menu"></div>
 
   <main>
-    <h1 th:text="${statusCode}"></h1>
+    <h1 th:text="'Error ' + ${statusCode}"></h1>
     <div th:text="${message}"></div>
   </main>
   </body>

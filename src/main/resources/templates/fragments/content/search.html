@@ -14,10 +14,7 @@
     <div th:each="result : ${searchResult}">
 
       <div class="card">
-        <div>
-          <span class="header">Track: </span>
-          <span th:text="${result.trackName}"></span>
-        </div>
+        <div th:text="${result.trackName}"></div>
 
         <div>
           <span class="header">Artist: </span>

@@ -9,12 +9,18 @@
   <h2>Random albums</h2>
   <div class="card" th:each="album : ${randomAlbums}">
     <div th:text="${album.title}"></div>
-    <div class="category" th:text="${album.artist}"></div>
+    <div>
+      <span class="header">Artist: </span>
+      <span class="category" th:text="${album.artist}"></span>
+    </div>
   </div>
 
   <h2>Random tracks</h2>
   <div class="card" th:each="track : ${randomTracks}">
     <div th:text="${track.name}"></div>
-    <div th:text="${track.albumTitle}"></div>
-  </div>
+    <div>
+      <span class="header">Album: </span>
+      <span th:text="${track.albumTitle}"></span>
+    </div>
+    </div>
 </main>
