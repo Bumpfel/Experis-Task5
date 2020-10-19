@@ -5,18 +5,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import se.experis.task5.data_access.MediaRepositoryMock;
+import se.experis.task5.data_access.MediaRepository;
 
 @Controller
 public class ViewController {
   
-  private MediaRepositoryMock mediaRepositoryMock = new MediaRepositoryMock();
+  private MediaRepository mediaRepository = new MediaRepository();
 
   @GetMapping("/")
   public String index(Model model) {
-    model.addAttribute("randomArtists", mediaRepositoryMock.getRandomArtists(5));
-    model.addAttribute("randomAlbums", mediaRepositoryMock.getRandomAlbums(5));
-    model.addAttribute("randomTracks", mediaRepositoryMock.getRandomTracks(5));
+    int amount = 5;
+    model.addAttribute("randomArtists", mediaRepository.getRandomArtists(amount));
+    model.addAttribute("randomAlbums", mediaRepository.getRandomAlbums(amount));
+    model.addAttribute("randomTracks", mediaRepository.getRandomTracks(amount));
     model.addAttribute("content", "home");
     return "index";
   }
@@ -24,7 +25,7 @@ public class ViewController {
   @GetMapping("/search")
   public String search(@RequestParam("term") String searchTerm, Model model) {
     if(!searchTerm.isBlank()) {
-      var result = mediaRepositoryMock.findTrack(searchTerm);
+      var result = mediaRepository.findTrack(searchTerm);
       model.addAttribute("searchResult", result);
     }
     model.addAttribute("content", "search");
