@@ -1,0 +1,12 @@
+<main th:fragment="api">
+  <h1>Available API Endpoints</h1>
+  
+  <div class="card block" th:each="endpoint : ${endpoints}">
+    <div th:text="${endpoint.get(0)}"></div>
+    <div>
+      <a th:if="${endpoint.get(0) == 'GET'}" th:href="@{${endpoint.get(1)}}" th:text="${endpoint.get(1)}"></a>
+      <span th:unless="${endpoint.get(0) == 'GET'}" th:text="${endpoint.get(1)}"></span>
+    </div>
+    <span th:text="${endpoint.get(2)}"></span>
+  </div>
+</main>

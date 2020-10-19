@@ -1,0 +1,9 @@
+<div id="menu" th:fragment="menu">
+  <a href="/">home</a>
+  <a href="/api-endpoints">api</a>
+
+  <form action="/search">
+    <input type="search" name="term" th:value="${param.term}" placeholder="Search..." autocomplete="off">
+    <button type="submit">Search</button>
+  </form>
+</div>

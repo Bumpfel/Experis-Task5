@@ -17,19 +17,24 @@ public class ViewController {
     model.addAttribute("randomArtists", mediaRepositoryMock.getRandomArtists(5));
     model.addAttribute("randomAlbums", mediaRepositoryMock.getRandomAlbums(5));
     model.addAttribute("randomTracks", mediaRepositoryMock.getRandomTracks(5));
+    model.addAttribute("content", "home");
     return "index";
   }
-
+  
   @GetMapping("/search")
   public String search(@RequestParam("term") String searchTerm, Model model) {
-    var result = mediaRepositoryMock.findTrack(searchTerm);
-    model.addAttribute("searchResult", result);
-    return "search";
+    if(!searchTerm.isBlank()) {
+      var result = mediaRepositoryMock.findTrack(searchTerm);
+      model.addAttribute("searchResult", result);
+    }
+    model.addAttribute("content", "search");
+    return "index";
   }
-
+  
   @GetMapping("/api-endpoints")
   public String api(Model model) {
     model.addAttribute("endpoints", CustomerController.getAllEndpoints());
-    return "api";
+    model.addAttribute("content", "api");
+    return "index";
   }
 }

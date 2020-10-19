@@ -1,27 +1,11 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="../css/style.css">
-  <title>Experis Task 5: Search Results</title>
-</head>
-
-<body>
-  <!-- Menu -->
-  <div id="menu">
-    <a href="/">home</a>
-    <a href="/api-endpoints">api</a>
-
-    <form action="/search">
-      <input type="search" name="term" placeholder="Search..." autocomplete="off">
-      <button type="submit">Search</button>
-    </form>
+<main th:fragment="search" th:switch="${searchResult}">
+  <h1>Search results</h1>
+  
+  <div th:case="null">
+    Search is empty
   </div>
 
-  <!-- Content -->
-  <main>
-    <h1>Search results</h1>
+  <div th:case="*">
     Your search for "<span th:text="${param.term}"></span>" resulted in <span th:text="${searchResult.size()}"></span>
     matches
 
@@ -50,9 +34,7 @@
           <span th:text="${result.genre}"></span>
         </div>
       </div>
-
     </div>
-  </main>
-</body>
 
-</html>
+  </div>
+</main>
