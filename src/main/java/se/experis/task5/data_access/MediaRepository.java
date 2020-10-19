@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.experis.task5.models.Album;
-import se.experis.task5.models.Customer;
 import se.experis.task5.models.SearchResult;
 import se.experis.task5.models.Track;
 
@@ -32,13 +31,13 @@ public class MediaRepository {
     return list;
   }
   
-  public List<Track> getRandomTracks(int number) { // TODO lägg till album name
+  public List<Track> getRandomTracks(int number) {
     var list = new ArrayList<Track>();
     Connection conn = DBConnectionHandler.getConnection();
     try {
-      ResultSet result = conn.prepareStatement("SELECT Track.Name As trackName FROM Track ORDER BY RANDOM() LIMIT " + number).executeQuery();
+      ResultSet result = conn.prepareStatement("SELECT Track.Name AS trackName, Album.Title AS albumTitle FROM Track JOIN Album ON Album.AlbumId = Track.AlbumId ORDER BY RANDOM() LIMIT " + number).executeQuery();
       while(result.next()) {
-        Track track = new Track(result.getString("trackName"), null); //result.getString("albumTitle"));
+        Track track = new Track(result.getString("trackName"), result.getString("albumTitle"));
         list.add(track);
       }
     } catch(SQLException e) {
@@ -52,9 +51,9 @@ public class MediaRepository {
     var list = new ArrayList<Album>();
     Connection conn = DBConnectionHandler.getConnection();
     try {
-      ResultSet result = conn.prepareStatement("SELECT Title FROM Album ORDER BY RANDOM() LIMIT " + number).executeQuery();
+      ResultSet result = conn.prepareStatement("SELECT Album.Title AS albumTitle, Artist.Name AS artistName FROM Album JOIN Artist ON Album.ArtistId = Artist.ArtistId ORDER BY RANDOM() LIMIT " + number).executeQuery();
       while(result.next()) {
-        Album album = new Album(result.getString("Title"), null);
+        Album album = new Album(result.getString("albumTitle"), result.getString("artistName"));
         list.add(album);
       }
     } catch(SQLException e) {
