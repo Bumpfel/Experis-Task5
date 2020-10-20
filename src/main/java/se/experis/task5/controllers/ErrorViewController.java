@@ -20,7 +20,7 @@ public class ErrorViewController implements ErrorController {
     Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
     Exception ex = (Exception) request.getAttribute("javax.servlet.error.exception");
     String displayMessage;
-    request.getAttribute("javax.servlet.error.exception");
+    
     if(statusCode == 404) {
       // Page not found
       displayMessage = "Four, oh four; page not found";
