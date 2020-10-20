@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+  background-color: #9a9;
+}
+
+/* Menu */
+#menu {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-transform: uppercase;
+  background-color: #222;
+  white-space: nowrap;
+}
+#menu a {
+  display: inline-block;
+  padding: 15px 50px;
+  margin-right: -5px;
+
+  color: #ccc;
+  text-decoration: none;
+  border-right: 1px solid #ccc;
+}
+#menu a:hover {
+  background-color: #555;
+}
+
+#menu form {
+  display: inline-block;
+  position: relative;
+  padding-left: 10px;
+}
+#menu input {
+  padding: 5px;
+  outline: none;
+}
+#menu button {
+  padding: 5px;
+}
+
+
+
+/* Main */
+main {
+  margin: 20px;
+}
+
+main a {
+  color: #222;
+}
+
+.card {
+  display: inline-flex;
+  margin: 10px;
+}
+
+.block {
+  display: block;
+  margin-bottom: 20px;
+}
+
+span.header {
+  font-weight: bold;
+}
+
+.card div {
+  padding: 10px 15px;
+  display: inline-block;
+  background-color: #787;
+  border: 1px solid #676;
+}
+
+.card div:nth-child(2) {
+  background-color: #676;
+  border-color: #565; 
+}
+
+.card div:nth-child(3) {
+  background-color: #565;
+  border-color: #454; 
+}

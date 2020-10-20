@@ -1,0 +1,26 @@
+<main th:fragment="home">
+  <h1>Home</h1>
+
+  <h2>Random artists </h2>
+  <div class="card" th:each="artist : ${randomArtists}">
+    <div th:text="${artist}"></div>
+  </div>
+
+  <h2>Random albums</h2>
+  <div class="card" th:each="album : ${randomAlbums}">
+    <div th:text="${album.title}"></div>
+    <div>
+      <span class="header">Artist: </span>
+      <span class="category" th:text="${album.artist}"></span>
+    </div>
+  </div>
+
+  <h2>Random tracks</h2>
+  <div class="card" th:each="track : ${randomTracks}">
+    <div th:text="${track.name}"></div>
+    <div>
+      <span class="header">Album: </span>
+      <span th:text="${track.albumTitle}"></span>
+    </div>
+    </div>
+</main>

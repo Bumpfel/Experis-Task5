@@ -1,0 +1,37 @@
+<main th:fragment="search" th:switch="${searchResult}">
+  <h1>Search results</h1>
+  
+  <div th:case="null">
+    Search is empty
+  </div>
+
+  <div th:case="*">
+    Your search for "<span th:text="${param.term}"></span>" resulted in <span th:text="${searchResult.size()}"></span>
+    matches
+
+    <br>
+
+    <div th:each="result : ${searchResult}">
+
+      <div class="card">
+        <div th:text="${result.trackName}"></div>
+
+        <div>
+          <span class="header">Artist: </span>
+          <span th:text="${result.artistName}"></span>
+        </div>
+
+        <div>
+          <span class="header">Album: </span>
+          <span th:text="${result.albumName}"></span>
+        </div>
+
+        <div>
+          <span class="header">Genre: </span>
+          <span th:text="${result.genre}"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
