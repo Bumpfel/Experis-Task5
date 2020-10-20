@@ -1,16 +1,21 @@
 package se.experis.task5.data_access;
 
-import se.experis.task5.models.Customer;
-import se.experis.task5.models.CustomerSpending;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import se.experis.task5.logging.Logger;
+import se.experis.task5.models.Customer;
+import se.experis.task5.models.CustomerSpending;
+
 public class CustomerRepository {
 
     private Connection connection = null;
+    private Logger logger = new Logger();
 
     public ArrayList<Customer> getAllCustomers() {
         ArrayList<Customer> customers = new ArrayList<>();
@@ -28,15 +33,13 @@ public class CustomerRepository {
                     set.getString("PostalCode"),
                     set.getString("Phone")));
             }
-            System.out.println("It went well!");
-
         } catch (Exception exception) {
-            System.out.println(exception.toString());
+            logger.error(exception.getMessage());
         } finally {
             try {
                 connection.close();
             } catch (Exception exception) {
-                System.out.println(exception.toString());
+                logger.error(exception.getMessage());
             }
         }
         return customers;
@@ -68,16 +71,13 @@ public class CustomerRepository {
 
             int result = prep.executeUpdate();
             success = (result != 0);
-
-            System.out.println("Add went well!");
-
         } catch (Exception exception) {
-            System.out.println(exception.getMessage());
+                logger.error(exception.getMessage());
         } finally {
             try {
                 connection.close();
             } catch (Exception exception) {
-                System.out.println(exception.toString());
+                logger.error(exception.getMessage());
             }
         }
         return success;
@@ -112,16 +112,13 @@ public class CustomerRepository {
 
             int result = prep.executeUpdate();
             success = (result != 0); // if res = 1; true
-
-            System.out.println("Update went well!");
-
         } catch (Exception exception) {
-            System.out.println(exception.toString());
+            logger.error(exception.getMessage());
         } finally {
             try {
                 connection.close();
             } catch (Exception exception) {
-                System.out.println(exception.toString());
+                logger.error(exception.getMessage());
             }
         }
         return success;
@@ -142,12 +139,12 @@ public class CustomerRepository {
                 linkedHashMap.put(country, count);
             }
         } catch (Exception exception) {
-            System.out.println(exception.toString());
+            logger.error(exception.getMessage());
         } finally {
             try {
                 connection.close();
             } catch (Exception exception) {
-                System.out.println(exception.toString());
+                logger.error(exception.getMessage());
             }
         }
         return linkedHashMap;
@@ -172,43 +169,52 @@ public class CustomerRepository {
                     result.getDouble("total"))
                 );
             }
-            System.out.println("Get all went well!");
         } catch (Exception exception) {
-            System.out.println(exception.toString());
+            logger.error(exception.getMessage());
         } finally {
             try {
                 connection.close();
             } catch (Exception exception) {
-                System.out.println(exception.toString());
+                logger.error(exception.getMessage());
             }
         }
         return customerSpending;
     }
 
-    public List<String> getMostPopularGenre(int customerId) { // TODO helt fel
+    public List<String> getMostPopularGenre(int customerId) {
         ArrayList<String> popularGenre = new ArrayList<>();
         try {
             connection = DBConnectionHandler.getConnection();
             PreparedStatement statement = connection.prepareStatement(
-                "SELECT Customer.FirstName, Customer.LastName, Genre.Name AS genreName FROM Customer " +
-                "JOIN Invoice ON Customer.CustomerId = invoice.CustomerId " +
-                "JOIN InvoiceLine invoiceLine ON invoice.CustomerId = invoiceLine.InvoiceId " +
-                "JOIN Track track ON invoiceLine.InvoiceId = track.TrackId " +
-                "JOIN Genre genre ON track.TrackId = genre.GenreId " +
-                "GROUP BY genre.Name ORDER BY genre.Name");
+                "SELECT Genre.Name AS genreName, Count(InvoiceLine.InvoiceId) AS count FROM Customer " +
+                "JOIN Invoice ON Customer.CustomerId = Invoice.CustomerId " +
+                "JOIN InvoiceLine ON Invoice.InvoiceId = InvoiceLine.InvoiceId " +
+                "JOIN Track ON InvoiceLine.TrackId = Track.TrackId " +
+                "JOIN Genre ON Track.GenreId = Genre.GenreId " +
+                "WHERE Customer.CustomerId = ?" +
+                "GROUP BY Genre.Name ORDER BY count DESC"
+            );
+            statement.setInt(1, customerId);
             ResultSet result = statement.executeQuery();
 
+            int highest = -1;
             while (result.next()) {
+                int count = result.getInt("count");
+                if(count > highest) {
+                    highest = count;
+                } else if(count < highest) {
+                    break;
+                }                
                 popularGenre.add(result.getString("genreName"));
             }
-            System.out.println("Get all went well!");
+            System.out.println();
         } catch (Exception exception) {
-            System.out.println(exception.toString());
+            logger.error(exception.getMessage());
         } finally {
             try {
                 connection.close();
             } catch (Exception exception) {
-                System.out.println(exception.toString());
+                logger.error(exception.getMessage());
             }
         }
         return popularGenre;
