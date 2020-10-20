@@ -9,8 +9,8 @@ public class CustomerSpending extends Customer {
 
   private int spendings;
 
-  public CustomerSpending(int id, String firstName, String lastName, String country, String postalCode, String phone, int spendings) {
-    super(id, firstName, lastName, country, postalCode, phone);
+  public CustomerSpending(String firstName, String lastName, String country, String postalCode, String phone, int spendings) {
+    super(0, firstName, lastName, country, postalCode, phone);
     this.spendings = spendings;
   }
 }

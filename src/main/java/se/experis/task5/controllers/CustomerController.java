@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import se.experis.task5.data_access.CustomerRepository;
 import se.experis.task5.data_access.CustomerRepositoryMock;
 import se.experis.task5.models.Customer;
 import se.experis.task5.models.CustomerSpending;
@@ -20,7 +21,7 @@ import se.experis.task5.models.CustomerSpending;
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerController {
   
-  CustomerRepositoryMock customerRepository = new CustomerRepositoryMock();
+  CustomerRepository customerRepository = new CustomerRepository();
 
   public static List<List<String>> getAllEndpoints() {
     return List.of(
