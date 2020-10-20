@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import se.experis.task5.data_access.CustomerRepository;
-import se.experis.task5.data_access.CustomerRepositoryMock;
 import se.experis.task5.models.Customer;
 import se.experis.task5.models.CustomerSpending;
 
