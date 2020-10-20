@@ -21,12 +21,12 @@ public class CustomerRepository {
             ResultSet set = prep.executeQuery();
             while (set.next()) {
                 customers.add(new Customer(
-                        set.getInt("CustomerId"),
-                        set.getString("FirstName"),
-                        set.getString("LastName"),
-                        set.getString("Country"),
-                        set.getString("PostalCode"),
-                        set.getString("Phone")));
+                    set.getInt("CustomerId"),
+                    set.getString("FirstName"),
+                    set.getString("LastName"),
+                    set.getString("Country"),
+                    set.getString("PostalCode"),
+                    set.getString("Phone")));
             }
             System.out.println("It went well!");
 
@@ -48,12 +48,9 @@ public class CustomerRepository {
             connection = DBConnectionHandler.getConnection();
 
             int nextCustomerId = connection.prepareStatement("SELECT CustomerId FROM Customer ORDER BY CustomerId DESC LIMIT 1")
-                .executeQuery()
-                .getInt("CustomerId") + 1;
+                .executeQuery().getInt("CustomerId") + 1;
             int supportRepId = 1;connection.prepareStatement("SELECT EmployeeId FROM Employee LIMIT 1")
-                .executeQuery()
-                .getInt("EmployeeId");
-
+                .executeQuery().getInt("EmployeeId");
               
             PreparedStatement prep = connection.prepareStatement(
                 "INSERT INTO Customer (CustomerId, FirstName, LastName, Email, Country, PostalCode, Phone, SupportRepId)" +
@@ -76,7 +73,6 @@ public class CustomerRepository {
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
-            // exception.printStackTrace();
         } finally {
             try {
                 connection.close();
@@ -98,10 +94,7 @@ public class CustomerRepository {
             prep.setString(3, customer.getCountry());
             prep.setString(4, customer.getPostalCode());
             prep.setString(5, customer.getPhone());
-            prep.setInt(6, customer.getCustomerId());
-
-            System.out.println(customer.getCustomerId());
-            
+            prep.setInt(6, customer.getCustomerId());          
 
             int result = prep.executeUpdate();
             success = (result != 0); // if res = 1; true
