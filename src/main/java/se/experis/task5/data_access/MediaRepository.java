@@ -6,13 +6,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.experis.task5.logging.Logger;
 import se.experis.task5.models.Album;
 import se.experis.task5.models.SearchResult;
 import se.experis.task5.models.Track;
 
 public class MediaRepository {
 
-  public List<String> getRandomArtists(int number) {   
+  private Logger logger = new Logger();
+
+  public List<String> getRandomArtists(int number) {
     var list = new ArrayList<String>();
     Connection conn = DBConnectionHandler.getConnection();
     try {
@@ -20,10 +23,8 @@ public class MediaRepository {
       while(result.next()) {
         list.add(result.getString("Name"));
       }
-    } catch(SQLException e) {
-      // TODO log error msg
     } catch(Exception e) {
-      // TODO log error msg
+      logger.error(e.getMessage());
     }
     return list;
   }
@@ -41,10 +42,14 @@ public class MediaRepository {
         Track track = new Track(result.getString("trackName"), result.getString("albumTitle"));
         list.add(track);
       }
-    } catch(SQLException e) {
-      // TODO log error msg
     } catch(Exception e) {
-      // TODO log error msg
+      logger.error(e.getMessage());
+    } finally {
+      try {
+        conn.close();
+      } catch(SQLException e) {
+        logger.error(e.getMessage());
+      }
     }
     return list;
   }
@@ -62,10 +67,14 @@ public class MediaRepository {
         Album album = new Album(result.getString("albumTitle"), result.getString("artistName"));
         list.add(album);
       }
-    } catch(SQLException e) {
-      // TODO log error msg
     } catch(Exception e) {
-      // TODO log error msg
+      logger.error(e.getMessage());
+    } finally {
+      try {
+        conn.close();
+      } catch(SQLException e) {
+        logger.error(e.getMessage());
+      }
     }
     return list;
   }
@@ -87,10 +96,14 @@ public class MediaRepository {
         var searchResult = new SearchResult(result.getString("trackName"), result.getString("artistName"), result.getString("albumTitle"), result.getString("genreName"));
         list.add(searchResult);
       }
-    } catch(SQLException e) {
-      // TODO log error msg
     } catch(Exception e) {
-      // TODO log error msg
+      logger.error(e.getMessage());
+    } finally {
+      try {
+        conn.close();
+      } catch(SQLException e) {
+        logger.error(e.getMessage());
+      }
     }
     return list;
   }
