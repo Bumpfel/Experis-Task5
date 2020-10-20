@@ -11,7 +11,6 @@ import java.util.Map;
 public class CustomerRepository {
 
     private Connection connection = null;
-    private Object LinkedHashMap;
 
     public ArrayList<Customer> getAllCustomers() {
         ArrayList<Customer> customers = new ArrayList<>();
@@ -46,22 +45,29 @@ public class CustomerRepository {
     public Boolean addCustomer(Customer customer) {
         Boolean success = false;
         try {
-
             connection = DBConnectionHandler.getConnection();
 
-            ResultSet set = connection.prepareStatement("SELECT EmployeeId FROM Employee LIMIT 1").executeQuery();
-            int getEmployeeId = set.getInt("EmployeeId");
+            int nextCustomerId = connection.prepareStatement("SELECT CustomerId FROM Customer ORDER BY CustomerId DESC LIMIT 1")
+                .executeQuery()
+                .getInt("CustomerId") + 1;
+            int supportRepId = 1;connection.prepareStatement("SELECT EmployeeId FROM Employee LIMIT 1")
+                .executeQuery()
+                .getInt("EmployeeId");
 
-            PreparedStatement prep =
-                    connection.prepareStatement("INSERT INTO customer(CustomerId,FirstName,LastName,Country,PostalCode,Phone,SupportRepId)" +
-                            " VALUES(25,Victor,Stevens,USA,53703,+1 (608) 257-0597");
-            prep.setInt(1, customer.getCustomerId());
+              
+            PreparedStatement prep = connection.prepareStatement(
+                "INSERT INTO Customer (CustomerId, FirstName, LastName, Email, Country, PostalCode, Phone, SupportRepId)" +
+                " VALUES(?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+            
+            prep.setInt(1, nextCustomerId);
             prep.setString(2, customer.getFirstName());
             prep.setString(3, customer.getLastName());
-            prep.setString(4, customer.getCountry());
-            prep.setString(5, customer.getPostalCode());
-            prep.setString(6, customer.getPhone());
-            prep.setInt(7, getEmployeeId);
+            prep.setString(4, customer.getEmail());
+            prep.setString(5, customer.getCountry());
+            prep.setString(6, customer.getPostalCode());
+            prep.setString(7, customer.getPhone());
+            prep.setInt(8, supportRepId);
 
             int result = prep.executeUpdate();
             success = (result != 0);
@@ -69,7 +75,8 @@ public class CustomerRepository {
             System.out.println("Add went well!");
 
         } catch (Exception exception) {
-            System.out.println(exception.toString());
+            System.out.println(exception.getMessage());
+            // exception.printStackTrace();
         } finally {
             try {
                 connection.close();
@@ -84,15 +91,17 @@ public class CustomerRepository {
         Boolean success = false;
         try {
             connection = DBConnectionHandler.getConnection();
-            PreparedStatement prep =
-                    connection.prepareStatement("UPDATE customer SET CustomerId=?, FirstName=?, LastName=?, Country=?, PostalCode=?, Phone=?" +
-                            " WHERE Id=?");
-            prep.setInt(1, customer.getCustomerId());
-            prep.setString(2, customer.getFirstName());
-            prep.setString(3, customer.getLastName());
-            prep.setString(4, customer.getCountry());
-            prep.setString(5, customer.getPostalCode());
-            prep.setString(6, customer.getPhone());
+            PreparedStatement prep = connection.prepareStatement(
+                "UPDATE Customer SET FirstName=?, LastName=?, Country=?, PostalCode=?, Phone=? WHERE CustomerId=?");
+            prep.setString(1, customer.getFirstName());
+            prep.setString(2, customer.getLastName());
+            prep.setString(3, customer.getCountry());
+            prep.setString(4, customer.getPostalCode());
+            prep.setString(5, customer.getPhone());
+            prep.setInt(6, customer.getCustomerId());
+
+            System.out.println(customer.getCustomerId());
+            
 
             int result = prep.executeUpdate();
             success = (result != 0); // if res = 1; true
@@ -113,17 +122,16 @@ public class CustomerRepository {
 
     public Map<String, Integer> getNrOfCustomersByCountryOrdered() {
 
+        Map<String, Integer> linkedHashMap = new LinkedHashMap<>();
         try {
             connection = DBConnectionHandler.getConnection();
 
-            PreparedStatement statement = connection.prepareStatement("SELECT Country, Count (*) FROM Customer GROUP BY Country ORDER BY Count(CustomerID) DESC;");
+            PreparedStatement statement = connection.prepareStatement("SELECT Country, Count(CustomerId) AS total FROM Customer GROUP BY Country ORDER BY total DESC");
             ResultSet result = statement.executeQuery();
 
-            LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
-            ArrayList<String> customerCountry = new ArrayList<>();
             while (result.next()) {
-                String country = result.getString("country");
-                int count = result.getInt("count");
+                String country = result.getString("Country");
+                int count = result.getInt("total");
                 linkedHashMap.put(country, count);
             }
         } catch (Exception exception) {
@@ -135,23 +143,27 @@ public class CustomerRepository {
                 System.out.println(exception.toString());
             }
         }
-        return (Map<String, Integer>) LinkedHashMap;
+        return linkedHashMap;
     }
 
     public List<CustomerSpending> getHighestSpendingCustomersOrdered() {
         ArrayList<CustomerSpending> customerSpending = new ArrayList<>();
         try {
             connection = DBConnectionHandler.getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT customer.FirstName, customer.LastName, round(SUM(invoice.Total),2) AS total FROM Customer customer JOIN Invoice invoice ON customer.CustomerId = invoice.CustomerId GROUP BY customer.CustomerId ORDER BY total DESC;");
+            PreparedStatement statement = connection.prepareStatement(
+                "SELECT Customer.FirstName, Customer.LastName, Customer.Country, Customer.PostalCode, Customer.Phone, round(SUM(Invoice.Total), 2) AS total FROM Customer " +
+                "JOIN Invoice ON Customer.CustomerId = Invoice.CustomerId " +
+                "GROUP BY Customer.CustomerId ORDER BY total DESC");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 customerSpending.add(new CustomerSpending(
-                        result.getString("firstName"),
-                        result.getString("lastName"),
-                        result.getString("country"),
-                        result.getString("postalCode"),
-                        result.getString("phone"),
-                        result.getInt("spendings")));
+                    result.getString("FirstName"),
+                    result.getString("LastName"),
+                    result.getString("Country"),
+                    result.getString("PostalCode"),
+                    result.getString("Phone"),
+                    result.getDouble("total"))
+                );
             }
             System.out.println("Get all went well!");
         } catch (Exception exception) {
@@ -166,15 +178,21 @@ public class CustomerRepository {
         return customerSpending;
     }
 
-    public List<String> getMostPopularGenre(int customerId) {
+    public List<String> getMostPopularGenre(int customerId) { // TODO helt fel
         ArrayList<String> popularGenre = new ArrayList<>();
         try {
             connection = DBConnectionHandler.getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT customer.FirstName, customer.LastName, genre.Name FROM Customer customer JOIN Invoice invoice ON customer.CustomerId = invoice.CustomerId JOIN InvoiceLine invoiceLine ON invoice.CustomerId = invoiceLine.InvoiceId JOIN Track track ON invoiceLine.InvoiceId = track.TrackId JOIN Genre genre ON track.TrackId = genre.GenreId GROUP BY genre.Name ORDER BY genre.Name;");
+            PreparedStatement statement = connection.prepareStatement(
+                "SELECT Customer.FirstName, Customer.LastName, Genre.Name AS genreName FROM Customer " +
+                "JOIN Invoice ON Customer.CustomerId = invoice.CustomerId " +
+                "JOIN InvoiceLine invoiceLine ON invoice.CustomerId = invoiceLine.InvoiceId " +
+                "JOIN Track track ON invoiceLine.InvoiceId = track.TrackId " +
+                "JOIN Genre genre ON track.TrackId = genre.GenreId " +
+                "GROUP BY genre.Name ORDER BY genre.Name");
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                popularGenre.add(result.getString("Genre list"));
+                popularGenre.add(result.getString("genreName"));
             }
             System.out.println("Get all went well!");
         } catch (Exception exception) {
