@@ -19,9 +19,9 @@ public class CustomerRepositoryMock {
   }
   private ArrayList<CustomerSpending> getRandomCustomerSpendings() {
     var list = new ArrayList<CustomerSpending>();
-    list.add(new CustomerSpending(2, "Mrs", "Ping", "United Kingdom", "4554", "222-1234", 455));
-    list.add(new CustomerSpending(1, "Mr", "Crab", "USA", "81920", "555-1234", 1231));
-    list.add(new CustomerSpending(3, "Sean", "Banan", "Sweden", "387 82", "08-172992", 908));
+    list.add(new CustomerSpending("Mrs", "Ping", "United Kingdom", "4554", "222-1234", 455));
+    list.add(new CustomerSpending("Mr", "Crab", "USA", "81920", "555-1234", 1231));
+    list.add(new CustomerSpending("Sean", "Banan", "Sweden", "387 82", "08-172992", 908));
     return list;
   }
 

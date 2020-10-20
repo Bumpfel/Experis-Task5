@@ -11,15 +11,11 @@ public class DBConnectionHandler {
     public static Connection getConnection() {
         try {
             String URL = "jdbc:sqlite::resource:Chinook_Sqlite.sqlite";
-
             return DriverManager.getConnection(URL);
-
         }
         catch (SQLException error) {
             new Logger().error(error.getMessage());
             return null;
         }
-
     }
-
 }
