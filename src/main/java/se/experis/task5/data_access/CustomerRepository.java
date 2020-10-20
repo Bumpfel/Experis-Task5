@@ -87,14 +87,28 @@ public class CustomerRepository {
         Boolean success = false;
         try {
             connection = DBConnectionHandler.getConnection();
+
+            Integer supportRepId = customer.getSupportRepId();
+            if(supportRepId == null) {   
+                var stmt = connection.prepareStatement("SELECT SupportRepId FROM Customer WHERE CustomerId=?");
+                stmt.setInt(1, customer.getCustomerId());
+                supportRepId = stmt.executeQuery().getInt("SupportRepId");
+            }
+
             PreparedStatement prep = connection.prepareStatement(
-                "UPDATE Customer SET FirstName=?, LastName=?, Country=?, PostalCode=?, Phone=? WHERE CustomerId=?");
+                "UPDATE Customer SET FirstName=?, LastName=?, Country=?, PostalCode=?, Phone=?, Company=?, Address=?, City=?, State=?, Fax=?, SupportRepId=? WHERE CustomerId=?");
             prep.setString(1, customer.getFirstName());
             prep.setString(2, customer.getLastName());
             prep.setString(3, customer.getCountry());
             prep.setString(4, customer.getPostalCode());
             prep.setString(5, customer.getPhone());
-            prep.setInt(6, customer.getCustomerId());          
+            prep.setString(6, customer.getCompanyName());
+            prep.setString(7, customer.getAddress());
+            prep.setString(8, customer.getCity());
+            prep.setString(9, customer.getState());
+            prep.setString(10, customer.getFax());
+            prep.setInt(11, supportRepId);          
+            prep.setInt(12, customer.getCustomerId());
 
             int result = prep.executeUpdate();
             success = (result != 0); // if res = 1; true
