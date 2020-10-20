@@ -1,6 +1,7 @@
 package se.experis.task5.data_access;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +20,9 @@ public class MediaRepository {
     var list = new ArrayList<String>();
     Connection conn = DBConnectionHandler.getConnection();
     try {
-      ResultSet result = conn.prepareStatement("SELECT Name FROM Artist ORDER BY RANDOM() LIMIT " + number).executeQuery();
+      var stmt = conn.prepareStatement("SELECT Name FROM Artist ORDER BY RANDOM() LIMIT ?");
+      stmt.setInt(1, number);
+      ResultSet result = stmt.executeQuery();
       while(result.next()) {
         list.add(result.getString("Name"));
       }
@@ -33,11 +36,12 @@ public class MediaRepository {
     var list = new ArrayList<Track>();
     Connection conn = DBConnectionHandler.getConnection();
     try {
-      ResultSet result = conn.prepareStatement(
+      var stmt = conn.prepareStatement(
         "SELECT Track.Name AS trackName, Album.Title AS albumTitle FROM Track " +
         "JOIN Album ON Album.AlbumId = Track.AlbumId " +
-        "ORDER BY RANDOM() LIMIT " + number)
-        .executeQuery();
+        "ORDER BY RANDOM() LIMIT ?");
+      stmt.setInt(1, number);
+      var result = stmt.executeQuery();
       while(result.next()) {
         Track track = new Track(result.getString("trackName"), result.getString("albumTitle"));
         list.add(track);
@@ -58,11 +62,12 @@ public class MediaRepository {
     var list = new ArrayList<Album>();
     Connection conn = DBConnectionHandler.getConnection();
     try {
-      ResultSet result = conn.prepareStatement(
+      var stmt = conn.prepareStatement(
         "SELECT Album.Title AS albumTitle, Artist.Name AS artistName FROM Album " +
         "JOIN Artist ON Album.ArtistId = Artist.ArtistId " +
-        "ORDER BY RANDOM() LIMIT " + number)
-        .executeQuery();
+        "ORDER BY RANDOM() LIMIT ?");
+      stmt.setInt(1, number);
+      var result = stmt.executeQuery();
       while(result.next()) {
         Album album = new Album(result.getString("albumTitle"), result.getString("artistName"));
         list.add(album);
